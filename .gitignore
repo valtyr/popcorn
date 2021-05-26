@@ -1,0 +1,10 @@
+*.o
+.DS_Store
+build
+targets/x86_64/iso
+dist
+
+
+# Books (lol)
+
+reading-material/ComputerSystems.pdf
