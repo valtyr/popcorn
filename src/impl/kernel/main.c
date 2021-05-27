@@ -21,13 +21,20 @@ static void play_sound(uint32_t nFrequence) {
 void kernel_main() {
     BIOSClear();
     BIOSSetColor(BIOS_COLOR_BLACK, BIOS_COLOR_YELLOW);
-    BIOSPrintBlink(">>> Popcorn kernel 64! ");
+    BIOSPrint(">>> Popcorn kernel 64! ");
     BIOSPrintChar(2);
-    BIOSPrintBlink(" <<<");
+    BIOSPrint(" <<<\n");
 
 
     BIOSSetColor(BIOS_COLOR_WHITE, BIOS_COLOR_BLACK);
-    BIOSPrint("\nTest");
+    BIOSPrint("Test\n");
+
+    while(true) {
+        BIOSWaitArbitrary();
+        BIOSPrint("Test\n");
+    }
+
+
 
     play_sound(440);
 

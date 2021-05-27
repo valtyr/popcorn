@@ -2,6 +2,14 @@ ENTRY(start)
 
 SECTIONS
 {
+
+  /* . = 512K;
+
+  .intro :
+  {
+    *(.intro)
+  } */
+
   . = 1M;
 
   .boot :

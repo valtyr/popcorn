@@ -32,7 +32,11 @@ void BIOSPrint(char*);
 void BIOSPrintBlink(char*);
 void BIOSSetColor(BIOSColor foreground, BIOSColor background);
 void BIOSPanic(char* message);
+void BIOSWaitArbitrary();
 
 
+// Defined in bios_routines.asm
+
+extern void BIOSSetGraphicsMode();
 extern void BIOSHalt();
 extern void BIOSWait(uint64_t microseconds);

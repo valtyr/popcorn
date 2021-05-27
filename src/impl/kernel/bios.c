@@ -1,7 +1,7 @@
 #include "bios.h"
 
 const static size_t NUM_COLS = 80;
-const static size_t NUM_ROWS = 80;
+const static size_t NUM_ROWS = 25;
 
 
 struct Char {
@@ -11,6 +11,7 @@ struct Char {
 
 // Pointer to first char in buffer
 struct Char* buffer = (struct Char*) 0xb8000;
+
 size_t col = 0;
 size_t row = 0;
 uint8_t color = BIOS_COLOR_WHITE | BIOS_COLOR_BLACK << 4;
@@ -31,7 +32,7 @@ void clear_row(size_t row) {
 
 void print_newline() {
     col = 0;
-    if(row < NUM_ROWS - 1) {
+    if(row < NUM_ROWS) {
         row++;
         return;
     }
@@ -44,7 +45,7 @@ void print_newline() {
         }
     }
     
-    clear_row(NUM_ROWS - 1);
+    clear_row(NUM_ROWS);
 }
 
 
@@ -91,18 +92,6 @@ void BIOSPrint(char* string) {
     }
 }
 
-void BIOSPrintBlink(char* string) {
-    for (size_t i = 0; 1; i++) {
-        char character = (uint8_t) string[i];
-
-        if(character == '\0') {
-            return;
-        }
-
-        BIOSPrintChar(character);
-    }
-}
-
 void BIOSPrintFancy(char* string) {
     for (size_t i = 0; 1; i++) {
         char character = (uint8_t) string[i];
@@ -128,3 +117,15 @@ void BIOSPanic(char* message) {
 
     BIOSHalt();
 }
+
+void BIOSWaitArbitrary() {
+    uint32_t test = 0;
+    while(test < 4294967295 / 16) {
+        test++;
+    }
+    return;
+}
+
+// void BIOSSetTextMode() {
+
+// }

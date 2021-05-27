@@ -3,7 +3,7 @@ function build-buildenv
 end
 
 function run-kernel
-  qemu-system-x86_64 -soundhw pcspk -cdrom dist/x86_64/kernel.iso
+  qemu-system-x86_64 -audiodev coreaudio,id=audio0 -machine pcspk-audiodev=audio0 -cdrom dist/x86_64/kernel.iso
 end
 
 function build-kernel

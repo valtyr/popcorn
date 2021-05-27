@@ -1,5 +1,6 @@
 global start
 extern long_mode_start
+extern intro_main
 
 section .text
 bits 32
@@ -7,6 +8,8 @@ bits 32
 start:
   ; Set stack pointer to top of stack
   mov esp, stack_top
+
+  ; call intro_main
 
   call check_multiboot
   call check_cpuid
