@@ -4,6 +4,7 @@ build
 targets/x86_64/iso
 dist
 
+.vscode
 
 # Books (lol)
 
