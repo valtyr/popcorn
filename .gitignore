@@ -3,7 +3,8 @@
 build
 targets/x86_64/iso
 dist
-
+compile_commands.json
+.cache
 .vscode
 
 # Books (lol)

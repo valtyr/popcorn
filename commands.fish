@@ -10,6 +10,10 @@ function build-kernel
   docker run --rm -v $PWD:/root/env popcorn-buildenv make build-x86_64
 end
 
+function generate-compiledb
+  docker run --rm -v $PWD:/root/env popcorn-buildenv make -Bnwk build-x86_64 | compiledb -o- > compile_commands.json
+end
+
 function build-and-run-kernel
   build-kernel && run-kernel
 end
