@@ -5,6 +5,7 @@
 #include <stdbool.h>
 
 #include "io.h"
+#include "serial.h"
 
 typedef enum {
     BIOS_COLOR_BLACK = 0,
@@ -34,7 +35,17 @@ void BIOSSetColor(BIOSColor foreground, BIOSColor background);
 void BIOSPanic(char* message);
 void BIOSPrintf (const char *format, ...);
 void BIOSHexdump(uint8_t* address, size_t length);
+void BIOSGreeting();
 
 
 extern void BIOSHalt();
 extern void BIOSWait(uint64_t microseconds);
+
+
+#define ASSERT(condition, reason) ({\
+    if(!(condition)) {\
+        BIOSSetColor(BIOS_COLOR_WHITE, BIOS_COLOR_RED);\
+        BIOSPrintf("\nPanic! Assertion error at %s:%d\n", __FILE__, __LINE__);\
+        BIOSPrintf("Reason: %s", reason);\
+        BIOSHalt();\
+    }})
