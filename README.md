@@ -1,7 +1,6 @@
-# Popcorn
+# 🍿 Popcorn
 
-🍿 A toy kernel for i386 with ambitions for semi-POSIX compatibility
-
+A toy kernel for i386 with ambitions for semi-POSIX compatibility
 
 <br/>
 
