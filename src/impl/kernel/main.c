@@ -1,35 +1,48 @@
 #include "bios.h"
+#include "multiboot2.h"
+
+MultibootInfo systemInfo;
 
 
-static void play_sound(uint32_t nFrequence) {
- 	uint32_t Div;
- 	uint8_t tmp;
- 
-        //Set the PIT to the desired frequency
- 	Div = 1193180 / nFrequence;
- 	outb(0x43, 0xb6);
- 	outb(0x42, (uint8_t) (Div) );
- 	outb(0x42, (uint8_t) (Div >> 8));
- 
-        //And play the sound using the PC speaker
- 	tmp = inb(0x61);
-  	if (tmp != (tmp | 3)) {
- 		outb(0x61, tmp | 3);
- 	}
- }
+void kernel_main(uint32_t magic, void* addr) {
 
-void kernel_main() {
     BIOSClear();
+
     BIOSSetColor(BIOS_COLOR_BLACK, BIOS_COLOR_YELLOW);
-    BIOSPrintBlink(">>> Popcorn kernel 64! ");
-    BIOSPrintChar(2);
-    BIOSPrintBlink(" <<<");
-
-
+    BIOSPrint("Popcorn kernel \2 attempting to boot.\n");
     BIOSSetColor(BIOS_COLOR_WHITE, BIOS_COLOR_BLACK);
-    BIOSPrint("\nTest");
 
-    play_sound(440);
+    BIOSPrintf("Magic: 0x%x; Multiboot info address: 0x%x;\n", magic, addr);
+
+    // Parse Multiboot info
+    switch(getSystemInfo(magic, addr, &systemInfo)) {
+    case MULTIBOOT2_OK:
+        break;
+    case MULTIBOOT2_INVALID_MAGIC:
+        BIOSPanic("Invalid Multiboot magic");
+        break;
+    case MULTIBOOT2_INVALID_RESERVED_FIELD:
+        BIOSPanic("Multiboot reserved field should be 0");
+        break;
+    default:
+        break;
+    }
+
+    BIOSPrintf("Total header size: %d;\n", systemInfo.totalHeaderSize);
+    BIOSPrintf("Command line string: \"%s\";\n", systemInfo.commandLineString);
+    BIOSPrintf("Lower memory: %dKB; Upper memory: %dKB;\n", systemInfo.lowerMemoryAmount, systemInfo.upperMemoryAmount);
+    BIOSPrintf("Boot device: 0x%x; Boot device partition: %d; Boot device subpartition %d;\n", systemInfo.bootDeviceNumber, systemInfo.bootDevicePartition, systemInfo.bootDeviceSubpartition);
+    BIOSPrintf(
+        "FBAddress: 0x%x; FBPitch: %d; FBWidth %d; FBHeight %d; FBBits %d;  FBType %d;\n",
+        systemInfo.framebufferAddress,
+        systemInfo.framebufferPitch,
+        systemInfo.framebufferWidth,
+        systemInfo.framebufferHeight,
+        systemInfo.framebufferBits,
+        systemInfo.framebufferType
+    );
+
+    BIOSHexdump(addr, 128);
 
     BIOSHalt();
 }

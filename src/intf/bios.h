@@ -32,6 +32,8 @@ void BIOSPrint(char*);
 void BIOSPrintBlink(char*);
 void BIOSSetColor(BIOSColor foreground, BIOSColor background);
 void BIOSPanic(char* message);
+void BIOSPrintf (const char *format, ...);
+void BIOSHexdump(uint8_t* address, size_t length);
 
 
 extern void BIOSHalt();
