@@ -29,14 +29,16 @@ info_request_start:
   dd 6          ; Request memory map
   dd 8          ; Request framebuffer info
 info_request_end:
+  dd 0          ; Padding
 
-  ; ; Video mode
-  ; dw 5          ; Framebuffer tag type
-  ; dw 0          ; Flags
-  ; dd 20         ; Size (fixed 20)
-  ; dd 1024       ; Width
-  ; dd 768        ; Height
-  ; dd 32         ; Depth
+  ; Video mode
+  dw 5          ; Framebuffer tag type
+  dw 0          ; Flags
+  dd 20         ; Size (fixed 20)
+  dd 1024       ; Width
+  dd 768        ; Height
+  dd 32         ; Depth
+  dd 0          ; Padding
 
   ; End tag
   dd 0

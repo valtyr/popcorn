@@ -1,0 +1,9 @@
+{
+    "configurations": [{
+        "name": "default",
+        "intelliSenseMode": "gcc-x86",
+        "includePath": ["${workspaceFolder}/src/intf/**"],
+        "cStandard": "c17",
+        "compileCommands": "${workspaceFolder}/compile_commands.json"
+    }]
+}

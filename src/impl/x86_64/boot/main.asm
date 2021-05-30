@@ -1,4 +1,6 @@
 global start
+global video_back_buffer
+
 extern kernel_main
 
 section .text
@@ -26,3 +28,6 @@ align 4096
 stack_bottom:
   resb 4096 * 4
 stack_top:
+
+video_back_buffer:
+  resb 1024 * 768 * 4

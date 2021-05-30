@@ -1,6 +1,10 @@
+#pragma once
+
 #include <stdbool.h>
 #include <stdint.h>
 #include <stddef.h>
+
+#include "bios.h"
 
 #define MULTIBOOT2_BOOTLOADER_MAGIC         0x36d76289
 
@@ -41,4 +45,5 @@ typedef struct MultibootInfo {
 } MultibootInfo;
 
 // Parses Multiboot response into systemInfo struct and returns true if successful
-int getSystemInfo(uint32_t magic, void* responseAddress, MultibootInfo* systemInfo);
+void Multiboot2GetSystemInfo(uint32_t magic, void* responseAddress, MultibootInfo* systemInfo);
+void Multiboot2PrintResponse(MultibootInfo* systemInfo);
