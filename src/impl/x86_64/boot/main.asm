@@ -1,7 +1,13 @@
 global start
 global video_back_buffer
+global popcorn_logo
 
 extern kernel_main
+
+section .data
+
+popcorn_logo:
+  incbin "bios-graphics/fbi/test-image.fbi"
 
 section .text
 bits 32

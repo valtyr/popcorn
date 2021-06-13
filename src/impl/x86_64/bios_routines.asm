@@ -1,7 +1,7 @@
 bits 64
 
 global BIOSWait
-global BIOSHalt
+; global BIOSHalt
 
 BIOSWait:
     push rbp

@@ -19,6 +19,11 @@ internet have been copied into this directory and linked below for easy access.
 
 - **[JamesM's kernel development tutorials](http://www.jamesmolloy.co.uk/tutorial_html/)**:
   A set of tutorials that focus on the basics of x86 kernel development.
+- **[The OSDev wiki](https://wiki.osdev.org/Main_Page)**
+
+### Specs
+
+- **[The Multiboot2 spec](https://www.gnu.org/software/grub/manual/multiboot2/multiboot.html#Header-layout)**
 
 ### Other sources of inspiration
 

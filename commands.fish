@@ -22,3 +22,6 @@ function build-and-run-kernel
   build-kernel && run-kernel
 end
 
+function kill-system
+  killall qemu-system-i386
+end

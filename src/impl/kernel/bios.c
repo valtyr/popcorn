@@ -354,3 +354,9 @@ void BIOSGreeting()
     BIOSSetColor(BIOS_COLOR_WHITE, BIOS_COLOR_BLACK);
     BIOSPrint("\n\n");
 }
+
+__attribute__((noreturn)) void BIOSHalt()
+{
+    __asm__ volatile("hlt");
+    __builtin_unreachable();
+}

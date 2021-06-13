@@ -2,6 +2,8 @@
 
 static char *tagNames[];
 
+#define MB2_GET_VALUE(type) *(type *)((responsePointer + (accumulatedSize += sizeof(type)) - sizeof(type)))
+
 void Multiboot2GetSystemInfo(uint32_t magic, void *responseAddress, MultibootInfo *systemInfo)
 {
     if (magic != MULTIBOOT2_BOOTLOADER_MAGIC)
@@ -27,6 +29,8 @@ void Multiboot2GetSystemInfo(uint32_t magic, void *responseAddress, MultibootInf
         uint32_t type = *(uint32_t *)responsePointer;
         uint32_t size = *(uint32_t *)(responsePointer + 4);
 
+        int accumulatedSize = 8;
+
         // Break early if end tag is reached.
         if (type == 0 && size == 8)
             break;
@@ -37,31 +41,31 @@ void Multiboot2GetSystemInfo(uint32_t magic, void *responseAddress, MultibootInf
             systemInfo->commandLineString = (char *)(responsePointer + 8);
             break;
         case MULTIBOOT2_TAG_BASIC_MEMORY:
-            systemInfo->lowerMemoryAmount = *(uint32_t *)(responsePointer + 8);
-            systemInfo->upperMemoryAmount = *(uint32_t *)(responsePointer + 12);
+            systemInfo->lowerMemoryAmount = MB2_GET_VALUE(uint32_t);
+            systemInfo->upperMemoryAmount = MB2_GET_VALUE(uint32_t);
             break;
         case MULTIBOOT2_TAG_BOOT_DEVICE:
-            systemInfo->bootDeviceNumber = *(uint32_t *)(responsePointer + 8);
-            systemInfo->bootDevicePartition = *(uint32_t *)(responsePointer + 12);
-            systemInfo->bootDeviceSubpartition = *(uint32_t *)(responsePointer + 16);
+            systemInfo->bootDeviceNumber = MB2_GET_VALUE(uint32_t);
+            systemInfo->bootDevicePartition = MB2_GET_VALUE(uint32_t);
+            systemInfo->bootDeviceSubpartition = MB2_GET_VALUE(uint32_t);
             break;
         case MULTIBOOT2_TAG_FRAMEBUFFER:
-            systemInfo->framebufferAddress = *(uint64_t *)(responsePointer + 8);
-            systemInfo->framebufferPitch = *(uint32_t *)(responsePointer + 16);
-            systemInfo->framebufferWidth = *(uint32_t *)(responsePointer + 20);
-            systemInfo->framebufferHeight = *(uint32_t *)(responsePointer + 24);
-            systemInfo->framebufferBits = *(int8_t *)(responsePointer + 25);
-            systemInfo->framebufferType = *(int8_t *)(responsePointer + 26);
+            systemInfo->framebufferAddress = MB2_GET_VALUE(uint64_t);
+            systemInfo->framebufferPitch = MB2_GET_VALUE(uint32_t);
+            systemInfo->framebufferWidth = MB2_GET_VALUE(uint32_t);
+            systemInfo->framebufferHeight = MB2_GET_VALUE(uint32_t);
+            systemInfo->framebufferBits = MB2_GET_VALUE(uint8_t);
+            systemInfo->framebufferType = MB2_GET_VALUE(uint8_t);
             // Should assert reserved keyword is 0;
             // *(uint8_t*) (responsePointer + 27) = 0;
             break;
         default:
-            // BIOSPrintf("Multiboot tag of type %s (%d) not handled.\n", tagNames[type], type);
+            BIOSPrintf("Multiboot tag of type %s (%d) not handled.\n", tagNames[type], type);
             break;
         }
 
         responsePointer += size;
-        responsePointer += ((uint32_t)responseAddress - (uint32_t)responsePointer) & 0x7;
+        responsePointer += ((uint32_t)responseAddress - (uint32_t)responsePointer) % 8;
     }
 }
 

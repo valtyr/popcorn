@@ -41,7 +41,7 @@ info_request_end:
   dd 0          ; Padding
 
   ; End tag
-  dd 0
+  dw 0
   dw 0
   dd 8
 header_end:
