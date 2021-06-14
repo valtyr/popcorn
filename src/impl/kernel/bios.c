@@ -5,15 +5,15 @@ const static size_t NUM_ROWS = 25;
 
 struct Char
 {
-    uint8_t character;
-    uint8_t color;
+    u8 character;
+    u8 color;
 };
 
 // Pointer to first char in buffer
 struct Char *buffer = (struct Char *)0xb8000;
 size_t col = 0;
 size_t row = 0;
-uint8_t color = BIOS_COLOR_WHITE | BIOS_COLOR_BLACK << 4;
+u8 color = BIOS_COLOR_WHITE | BIOS_COLOR_BLACK << 4;
 
 // Utility functions
 
@@ -171,7 +171,7 @@ void BIOSPrintChar(char character)
     }
 
     buffer[col + NUM_COLS * row] = (struct Char){
-        character : (uint8_t)character,
+        character : (u8)character,
         color : color,
     };
 
@@ -182,7 +182,7 @@ void BIOSPrint(char *string)
 {
     for (size_t i = 0; 1; i++)
     {
-        char character = (uint8_t)string[i];
+        char character = (u8)string[i];
 
         if (character == '\0')
         {
@@ -197,7 +197,7 @@ void BIOSPrintBlink(char *string)
 {
     for (size_t i = 0; 1; i++)
     {
-        char character = (uint8_t)string[i];
+        char character = (u8)string[i];
 
         if (character == '\0')
         {
@@ -212,7 +212,7 @@ void BIOSPrintFancy(char *string)
 {
     for (size_t i = 0; 1; i++)
     {
-        char character = (uint8_t)string[i];
+        char character = (u8)string[i];
 
         if (character == '\0')
             return;
@@ -298,7 +298,7 @@ void BIOSPrintf(const char *format, ...)
     }
 }
 
-void BIOSHexdump(uint8_t *address, size_t length)
+void BIOSHexdump(u8 *address, size_t length)
 {
     size_t offset = 0;
 

@@ -4,6 +4,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 
+#include "types.h"
 #include "io.h"
 #include "serial.h"
 
@@ -34,12 +35,12 @@ void BIOSPrintBlink(char *);
 void BIOSSetColor(BIOSColor foreground, BIOSColor background);
 void BIOSPanic(char *message);
 void BIOSPrintf(const char *format, ...);
-void BIOSHexdump(uint8_t *address, size_t length);
+void BIOSHexdump(u8 *address, size_t length);
 void BIOSGreeting();
 
 void BIOSHalt();
 
-extern void BIOSWait(uint64_t microseconds);
+extern void BIOSWait(u64 microseconds);
 
 #define ASSERT(condition, reason) (                                                \
     {                                                                              \

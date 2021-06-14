@@ -1,27 +1,27 @@
 #pragma once
 
-#include <stdint.h>
 #include <stddef.h>
+#include "types.h"
 
 typedef struct __attribute__((__packed__)) FBPixel
 {
-    uint8_t b;
-    uint8_t g;
-    uint8_t r;
-    uint8_t a;
+    u8 b;
+    u8 g;
+    u8 r;
+    u8 a;
 } FBPixel;
 
 typedef struct __attribute__((__packed__)) FBImage
 {
-    uint32_t width;
-    uint32_t height;
+    u32 width;
+    u32 height;
     FBPixel pixels[];
 } FBImage;
 
 typedef struct FBInfo
 {
-    uint32_t width;
-    uint32_t height;
+    u32 width;
+    u32 height;
     FBPixel *physicalBuffer;
 } FBInfo;
 
@@ -32,9 +32,9 @@ void FBOutput();
 void FBSet(int x, int y, FBPixel pixel);
 FBPixel FBGet(int x, int y);
 
-FBImage FBReadFBI(uint8_t *location);
+FBImage FBReadFBI(u8 *location);
 void FBBlitPixel(int x, int y, FBPixel sourcePixel);
 void FBBlit(int x, int y, FBImage *image);
-void FBFill(uint8_t r, uint8_t g, uint8_t b);
+void FBFill(u8 r, u8 g, u8 b);
 
 void FBDisplayTestPattern();

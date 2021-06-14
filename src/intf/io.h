@@ -1,6 +1,6 @@
 #pragma once
 
-#include <stdint.h>
+#include "types.h"
 
-void outb(uint16_t port, uint8_t v);
-uint8_t inb(uint16_t port);
+void outb(u16 port, u8 v);
+u8 inb(u16 port);

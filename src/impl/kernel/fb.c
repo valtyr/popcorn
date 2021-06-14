@@ -32,14 +32,14 @@ void FBOutput()
 
 void FBSet(int x, int y, FBPixel pixel)
 {
-    uint32_t pixelOffset = y * framebufferInfo.width + x;
+    u32 pixelOffset = y * framebufferInfo.width + x;
     video_back_buffer[pixelOffset] = pixel;
     // video_back_buffer[x + y * framebufferInfo.height] = pixel;
 }
 
 FBPixel FBGet(int x, int y)
 {
-    uint32_t pixelOffset = y * framebufferInfo.width + x;
+    u32 pixelOffset = y * framebufferInfo.width + x;
     return video_back_buffer[pixelOffset];
 }
 
@@ -110,7 +110,7 @@ void FBBlit(int x, int y, FBImage *image)
     }
 }
 
-void FBFill(uint8_t r, uint8_t g, uint8_t b)
+void FBFill(u8 r, u8 g, u8 b)
 {
     for (int x = 0; x < framebufferInfo.width; x++)
     {

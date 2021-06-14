@@ -5,6 +5,7 @@
 #include <stddef.h>
 
 #include "bios.h"
+#include "types.h"
 
 #define MULTIBOOT2_BOOTLOADER_MAGIC 0x36d76289
 
@@ -23,8 +24,8 @@
 typedef struct MultibootInfo
 {
     bool valid;
-    uint32_t responseAddress;
-    uint32_t totalHeaderSize;
+    u32 responseAddress;
+    u32 totalHeaderSize;
 
     // Currently a pointer to the memory returned by the
     // bootloader. Should copy this once the heap is set up.
@@ -33,22 +34,22 @@ typedef struct MultibootInfo
     size_t lowerMemoryAmount;
     size_t upperMemoryAmount;
 
-    uint32_t bootDeviceNumber;
-    uint32_t bootDevicePartition;
-    uint32_t bootDeviceSubpartition;
+    u32 bootDeviceNumber;
+    u32 bootDevicePartition;
+    u32 bootDeviceSubpartition;
 
-    uint64_t framebufferAddress;
-    uint32_t framebufferPitch;
-    uint32_t framebufferWidth;
-    uint32_t framebufferHeight;
-    uint8_t framebufferBits;
-    uint8_t framebufferType;
+    u64 framebufferAddress;
+    u32 framebufferPitch;
+    u32 framebufferWidth;
+    u32 framebufferHeight;
+    u8 framebufferBits;
+    u8 framebufferType;
 
-    uint16_t elfSymbolNumber;
-    uint16_t elfEntsize;
-    uint16_t elfShndx;
+    u16 elfSymbolNumber;
+    u16 elfEntsize;
+    u16 elfShndx;
 } MultibootInfo;
 
 // Parses Multiboot response into systemInfo struct and returns true if successful
-void Multiboot2GetSystemInfo(uint32_t magic, void *responseAddress, MultibootInfo *systemInfo);
+void Multiboot2GetSystemInfo(u32 magic, void *responseAddress, MultibootInfo *systemInfo);
 void Multiboot2PrintResponse(MultibootInfo *systemInfo);
