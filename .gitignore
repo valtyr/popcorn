@@ -1,7 +1,8 @@
 *.o
 .DS_Store
 build
-targets/x86_64/iso
+targets/x86_64/iso/**/*.iso
+targets/x86_64/iso/**/*.bin
 dist
 compile_commands.json
 .cache
