@@ -52,3 +52,25 @@ sudo dd if=dist/x86_64/kernel.iso of=[YOUR_DISK] bs=1m
 >
 > Make sure that the device you write to doesn't contain anything important.
 > <br/> The dd command can irreversibly destroy your data if you're not careful :trollface:
+
+
+## Stuff to do
+
+- [x] Multiboot2 and multiboot2 response parsing
+- [x] Basic input/output
+- [x] Serial output for debugging
+- [x] Basic framebuffer
+- [x] Set up a rudimentary GDT
+- [x] Get interrupts working
+- [x] Interface with the RTC
+- [x] PS2 keyboard support
+- [ ] Set up CI and auto deploy a v86 website
+- [ ] Implement a `kmalloc`
+- [ ] Create an ELF parser
+- [ ] Soundblaster 16 driver
+- [ ] Get some timers running
+- [ ] Start implementing syscalls!
+- [ ] Write a libc and start working on userland
+- [ ] Virtual terminal
+- [ ] Window server
+
