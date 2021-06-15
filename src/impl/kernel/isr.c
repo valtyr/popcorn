@@ -21,8 +21,6 @@ const char *exception_messages[] = {
     "Alignment Check Exception (486+)",
     "Machine Check Exception (Pentium/586+)"};
 
-typedef void (*ISRHandler)(registers_t);
-
 ISRHandler interrupt_handlers[256];
 
 void ISRRegisterHandler(uint8_t n, ISRHandler handler)

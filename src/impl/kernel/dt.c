@@ -122,11 +122,25 @@ static void InitIDT()
     IDTFlush(&idt_ptr);
 }
 
+void cli()
+{
+    __asm__ volatile("cli");
+}
+
+void sti()
+{
+    __asm__ volatile("sti");
+}
+
 void InitDescriptorTables()
 {
+    cli();
+
     // Initialise the global descriptor table
     InitGDT();
 
     // Initialise the interrupt descriptor table
     InitIDT();
+
+    sti();
 }
