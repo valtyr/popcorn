@@ -2,6 +2,7 @@
 #include "multiboot2.h"
 #include "fb.h"
 #include "dt.h"
+#include "ps2.h"
 
 MultibootInfo systemInfo;
 
@@ -26,8 +27,10 @@ void kernel_main(u32 magic, void *addr)
     FBBlit(systemInfo.framebufferWidth / 2 - popcorn_logo.width / 2, systemInfo.framebufferHeight / 2 - popcorn_logo.height / 2, &popcorn_logo);
     FBOutput();
 
-    // PS2Init();
+    PS2Init();
 
-    // while (true)
-    BIOSHalt();
+    while (true)
+    {
+        __asm__("nop");
+    }
 }
