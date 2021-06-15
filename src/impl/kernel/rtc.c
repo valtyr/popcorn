@@ -16,32 +16,27 @@ typedef enum
     CMOS_R_STATUS_B = 0x0B,
 } CMOSRegister;
 
-static RTCTime currentTime;
-
-void tiny_delay()
-{
-    for (int i = 10; i > 0; i--)
-        __asm__ volatile("nop");
-}
-
 int read_cmos(CMOSRegister r)
 {
     outb(0x70, r);
-    int value = inb(0x71);
-    tiny_delay(); // Supposedly this is good practice hmm
-    return value;
+    return inb(0x71);
 }
 
-RTCTime initial_blocking_read()
+int update_in_progress()
 {
-    int updateInProgress = 0;
-    while (!updateInProgress)
+    return read_cmos(CMOS_R_STATUS_A) & 0x80;
+}
+
+RTCTime RTCNow()
+{
+
+    while (update_in_progress())
     {
-        updateInProgress = read_cmos(CMOS_R_STATUS_A) >> 7 & 0x1;
-    }
-    while (updateInProgress)
-    {
-        updateInProgress = read_cmos(CMOS_R_STATUS_A) >> 7 & 0x1;
+        // Chill for a bit
+
+        // We could get bad state here...
+        // might want to read the registers
+        // twice until they match.
     }
 
     int seconds = read_cmos(CMOS_R_SECONDS);
@@ -98,18 +93,13 @@ void RTCInit()
 
     sti();
 
-    currentTime = initial_blocking_read();
-    BIOSPrintf("RTC initialized!\n");
+    RTCTime currentTime = RTCNow();
     BIOSPrintf(
-        "Current time: %d:%2d:%2d %d/%d/%d\n",
+        "RTC initialized at %d:%02d:%02d %02d/%02d/%d\n",
         currentTime.hours,
         currentTime.minutes,
         currentTime.seconds,
         currentTime.day,
         currentTime.month + 1,
         currentTime.year);
-}
-
-RTCTime RTCGetTime()
-{
 }

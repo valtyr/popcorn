@@ -16,5 +16,4 @@ typedef struct RTCTime
 } RTCTime;
 
 void RTCInit();
-
-RTCTime RTCGetTime();
+RTCTime RTCNow();
