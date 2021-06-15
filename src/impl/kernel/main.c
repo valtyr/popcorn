@@ -3,6 +3,7 @@
 #include "fb.h"
 #include "dt.h"
 #include "ps2.h"
+#include "rtc.h"
 
 MultibootInfo systemInfo;
 
@@ -20,6 +21,8 @@ void kernel_main(u32 magic, void *addr)
 
     // Initialize descriptor tables
     InitDescriptorTables();
+
+    RTCInit();
 
     // Initialize framebuffer and display greeting
     FBInit(systemInfo.framebufferWidth, systemInfo.framebufferHeight, (void *)systemInfo.framebufferAddress);

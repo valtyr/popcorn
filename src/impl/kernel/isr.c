@@ -23,7 +23,7 @@ const char *exception_messages[] = {
 
 ISRHandler interrupt_handlers[256];
 
-void ISRRegisterHandler(uint8_t n, ISRHandler handler)
+void ISRRegisterHandler(ISRIdentifier n, ISRHandler handler)
 {
     interrupt_handlers[n] = handler;
 }
