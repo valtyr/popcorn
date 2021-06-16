@@ -4,10 +4,14 @@
 #include "dt.h"
 #include "ps2.h"
 #include "rtc.h"
+#include "sb16.h"
 
 MultibootInfo systemInfo;
 
 extern FBImage popcorn_logo;
+
+extern u16 popcorn_chime[];
+extern u32 popcorn_chime_length;
 
 void kernel_main(u32 magic, void *addr)
 {
@@ -31,6 +35,9 @@ void kernel_main(u32 magic, void *addr)
     FBOutput();
 
     PS2Init();
+
+    SB16Init();
+    SB16DirectPlay(popcorn_chime, popcorn_chime_length);
 
     while (true)
     {

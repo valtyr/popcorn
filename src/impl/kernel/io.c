@@ -15,3 +15,9 @@ u8 inb(u16 port)
 					 : "dN"(port));
 	return v;
 }
+
+void delay(size_t microseconds)
+{
+	for (size_t i = 0; i < microseconds; ++i)
+		inb(0x80);
+}

@@ -1,6 +1,8 @@
 global start
 global video_back_buffer
 global popcorn_logo
+global popcorn_chime
+global popcorn_chime_length
 
 extern kernel_main
 
@@ -8,6 +10,11 @@ section .data
 
 popcorn_logo:
   incbin "bios-graphics/fbi/test-image.fbi"
+
+popcorn_chime:
+  incbin "bios-graphics/popcorn.pcm16"
+popcorn_chime_length:
+  dd (popcorn_chime_length-popcorn_chime)
 
 section .text
 bits 32

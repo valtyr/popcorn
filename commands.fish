@@ -7,7 +7,7 @@ function clean-artifacts
 end
 
 function run-kernel
-  qemu-system-i386 -rtc base=localtime -serial stdio -cdrom dist/x86_64/kernel.iso
+  qemu-system-i386 -rtc base=localtime -serial stdio -device sb16 -cdrom dist/x86_64/kernel.iso
 end
 
 function build-kernel
