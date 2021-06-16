@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Popcorn! 🍿</title>
+    <!-- not BASIC! -->
+
+    <script src="./v86/libv86.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/xterm.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.5/xterm.min.css"
+    />
+    <script>
+      "use strict";
+
+      const STATE_DEFAULT = "STATE_DEFAULT";
+      const STATE_EXPECT_2 = "STATE_EXPECT_2";
+      const STATE_EXPECT_3 = "STATE_EXPECT_3";
+      const STATE_EXPECT_4 = "STATE_EXPECT_4";
+
+      class UTF8Parser {
+        previousElements = [];
+        emitCallback = null;
+
+        state = STATE_DEFAULT;
+
+        utf8decoder = new TextDecoder();
+
+        constructor(emitCallback) {
+          this.emitCallback = emitCallback;
+        }
+
+        error = () => {
+          this.emitCallback("?");
+          this.previousElements = [];
+          this.state = STATE_DEFAULT;
+        };
+
+        defaultState = (char) => {
+          const code = char.charCodeAt(0);
+
+          if (code >> 7 === 0x0) {
+            this.emitCallback(char);
+            return;
+          }
+          if (code >> 5 === 0b110) {
+            this.previousElements.push(code);
+            this.state = STATE_EXPECT_2;
+            return;
+          }
+          if (code >> 4 === 0b1110) {
+            this.previousElements.push(code);
+            this.state = STATE_EXPECT_3;
+            return;
+          }
+          if (code >> 3 === 0b11110) {
+            this.previousElements.push(code);
+            this.state = STATE_EXPECT_4;
+            return;
+          }
+          this.error();
+        };
+
+        parseCodepointsAndEmit = () => {
+          const string = this.utf8decoder.decode(
+            new Uint8Array(this.previousElements)
+          );
+          this.emitCallback(string);
+          this.previousElements = [];
+          this.state = STATE_DEFAULT;
+        };
+
+        expect = (char) => {
+          const code = char.charCodeAt(0);
+
+          if (code >> 6 !== 0x2) {
+            this.error();
+            return;
+          }
+
+          if (this.state == STATE_EXPECT_2) {
+            this.previousElements.push(code);
+            this.parseCodepointsAndEmit();
+            return;
+          }
+          if (this.state == STATE_EXPECT_3) {
+            this.previousElements.push(code);
+
+            if (this.previousElements.length === 3)
+              this.parseCodepointsAndEmit();
+
+            return;
+          }
+          if (this.state == STATE_EXPECT_4) {
+            this.previousElements.push(code);
+
+            if (this.previousElements.length === 4)
+              this.parseCodepointsAndEmit();
+
+            return;
+          }
+        };
+
+        parseChar = (char) => {
+          switch (this.state) {
+            case STATE_DEFAULT:
+              this.defaultState(char);
+              break;
+            case STATE_EXPECT_2:
+            case STATE_EXPECT_3:
+            case STATE_EXPECT_4:
+              this.expect(char);
+              break;
+          }
+        };
+      }
+
+      window.onload = function () {
+        var emulator = (window.emulator = new V86Starter({
+          wasm_path: "./v86/v86.wasm",
+          wasm_fallback_path: "./v86/v86-fallback.wasm",
+          memory_size: 512 * 1024 * 1024,
+          vga_memory_size: 8 * 1024 * 1024,
+          screen_container: document.getElementById("screen_container"),
+          bios: {
+            url: "./v86/seabios.bin",
+          },
+          vga_bios: {
+            url: "./v86/vgabios.bin",
+          },
+          cdrom: {
+            // url: "./kernel.iso",
+            url: "https://cdn.jsdelivr.net/gh/valtyr/popcorn@isos/kernel.iso",
+          },
+          autostart: true,
+        }));
+
+        var term = new Terminal({
+          rows: 25,
+          cols: 100,
+          theme: {
+            foreground: "#dcdfe4",
+            background: "#282c34",
+            cursor: "#a3b3cc",
+
+            black: "#282c34",
+            brightBlack: "#282c34",
+
+            red: "#e06c75",
+            brightRed: "#e06c75",
+
+            green: "#98c379",
+            brightGreen: "#98c379",
+
+            yellow: "#e5c07b",
+            brightYellow: "#e5c07b",
+
+            blue: "#61afef",
+            brightBlue: "#61afef",
+
+            magenta: "#c678dd",
+            brightMagenta: "#c678dd",
+
+            cyan: "#56b6c2",
+            brightCyan: "#56b6c2",
+
+            white: "#dcdfe4",
+            brightWhite: "#dcdfe4",
+          },
+        });
+        term.open(document.getElementById("terminal"));
+
+        const parser = new UTF8Parser((char) => {
+          //   document.getElementById("terminal").innerText += char;
+          term.write(char);
+        });
+
+        emulator.add_listener("serial0-output-char", function (char) {
+          parser.parseChar(char);
+        });
+      };
+    </script>
+
+    <style>
+      body,
+      html {
+        padding: 0;
+        margin: 0;
+        background-color: black;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+          "Segoe UI Symbol";
+      }
+      .centerContainer {
+        height: 90vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .screenCanvas {
+        max-width: 100vw;
+        max-height: 90vh;
+      }
+      .header {
+        background-color: #282c34;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+      }
+      .headerTitle {
+        color: #d2daeb;
+        font-weight: 600;
+      }
+      .downloadLink {
+        color: #7b87a1;
+      }
+      .terminalWrapper {
+        background-color: #282c34;
+        display: flex;
+        justify-content: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <div class="headerTitle">🍿 Latest build</div>
+      <a
+        class="downloadLink"
+        download
+        href="https://github.com/valtyr/popcorn/releases/latest/download/kernel.iso"
+        >Download .iso</a
+      >
+    </div>
+    <div class="centerContainer">
+      <div id="screen_container">
+        <div
+          style="white-space: pre; font: 14px monospace; line-height: 14px"
+        ></div>
+        <canvas style="display: none" class="screenCanvas"></canvas>
+      </div>
+    </div>
+    <div class="terminalWrapper">
+      <div id="terminal"></div>
+    </div>
+  </body>
+</html>
