@@ -56,3 +56,14 @@ jobs:
           asset_path: ./dist/x86_64/kernel.iso
           asset_name: kernel.iso
           asset_content_type: application/octet-stream
+
+      - name: Change something
+        run: |
+          cp ./dist/x86_64/kernel.iso .
+
+      - name: Commit and push changes
+        uses: devops-infra/action-commit-push@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          commit_message: Update for ${{ github.sha }}
+          target_branch: isos
