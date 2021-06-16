@@ -4,6 +4,9 @@ A toy kernel for i386 with ambitions for semi-POSIX compatibility
 
 <br/>
 
+## Check it out
+
+Through the magic of [v86](https://github.com/copy/v86) you can check the OS out in your browser [here](https://valtyr.github.io/popcorn)!
 
 ## Getting started
 
