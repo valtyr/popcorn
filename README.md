@@ -67,13 +67,13 @@ sudo dd if=dist/x86_64/kernel.iso of=[YOUR_DISK] bs=1m
 - [x] Get interrupts working
 - [x] Interface with the RTC
 - [x] PS2 keyboard support
-- [ ] Set up CI and auto deploy a v86 website
+- [x] Set up CI and auto deploy a v86 website
 - [ ] Implement a `kmalloc`
 - [ ] Create an ELF parser
 - [ ] Soundblaster 16 driver
 - [ ] Get some timers running
 - [ ] Start implementing syscalls!
 - [ ] Write a libc and start working on userland
-- [ ] Virtual terminal
+- [ ] Virtual terminal
 - [ ] Window server
 
