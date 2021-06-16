@@ -57,11 +57,17 @@ jobs:
           asset_name: kernel.iso
           asset_content_type: application/octet-stream
 
-      - name: Change something
+      - name: Copy iso to root
         run: |
           cp ./dist/x86_64/kernel.iso . && git add ./kernel.iso
 
-      - name: Commit and push changes
+      - name: Delete iso branch
+        uses: dawidd6/action-delete-branch@v3
+        with:
+          github_token: ${{github.token}}
+          branches: isos
+
+      - name: Push to iso branch
         uses: devops-infra/action-commit-push@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
