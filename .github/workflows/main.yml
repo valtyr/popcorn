@@ -73,3 +73,9 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           commit_message: Update for ${{ github.sha }}
           target_branch: isos
+
+      - name: Purge JSDelivr cache
+        uses: satak/webrequest-action@master
+        with:
+          url: https://purge.jsdelivr.net/gh/valtyr/popcorn@isos/kernel.iso
+          method: GET
