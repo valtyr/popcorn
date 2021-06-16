@@ -1,0 +1,12 @@
+# action.yml
+name: "Build popcorn"
+description: "Generate an iso from popcorn source"
+outputs:
+  time: # id of output
+    description: "The time we greeted you"
+runs:
+  using: "docker"
+  image: "valtyr/popcorn-buildenv:latest"
+  entrypoint: "/bin/bash"
+  args:
+    - "./.github/workflows/generateBuild/build.sh"
