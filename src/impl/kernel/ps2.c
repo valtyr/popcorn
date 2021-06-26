@@ -43,6 +43,9 @@ static void interrupt_handler(registers_t registers)
     {
         uint8_t keycode = inb(KEYBOARD_DATA_PORT);
 
+        if (keycode == 1)
+            BIOSShutdown();
+
         // Switch to shifted keyboard map when shift is pressed
         if (shift_pressed == 0 && (keycode == 42 || keycode == 54))
         {
