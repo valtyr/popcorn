@@ -40,6 +40,8 @@ void BIOSGreeting();
 
 void BIOSHalt();
 
+void BIOSShutdown();
+
 extern void BIOSWait(u64 microseconds);
 
 #define ASSERT(condition, reason) (                                                \

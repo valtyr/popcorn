@@ -360,3 +360,10 @@ __attribute__((noreturn)) void BIOSHalt()
     __asm__ volatile("hlt");
     __builtin_unreachable();
 }
+
+__attribute__((noreturn)) void BIOSShutdown()
+{
+    // QEMU specific shutdown
+    outw(0x604, 0x2000);
+    __builtin_unreachable();
+}
