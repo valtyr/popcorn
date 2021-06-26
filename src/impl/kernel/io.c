@@ -7,6 +7,13 @@ void outb(u16 port, u8 v)
 					 : "a"(v), "dN"(port));
 }
 
+void outw(u16 port, u16 v)
+{
+	__asm__ volatile("outw %0,%1"
+					 :
+					 : "a"(v), "dN"(port));
+}
+
 u8 inb(u16 port)
 {
 	u8 v;
