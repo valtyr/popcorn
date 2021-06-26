@@ -62,7 +62,7 @@ void SB16Init()
 
     sti();
 
-    BIOSPrintf("SB16: Found version %d.%d", majorVersion, minorVersion);
+    BIOSPrintf("SB16: Found version %d.%d\n", majorVersion, minorVersion);
 
     // set_irq_register(SB16_DEFAULT_IRQ);
     // dmesgln("SB16: IRQ {}", get_irq_line());
