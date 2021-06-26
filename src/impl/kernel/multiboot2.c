@@ -60,7 +60,8 @@ void Multiboot2GetSystemInfo(u32 magic, void *responseAddress, MultibootInfo *sy
             // *(u8*) (responsePointer + 27) = 0;
             break;
         default:
-            BIOSPrintf("Multiboot tag of type %s (%d) not handled.\n", tagNames[type], type);
+            // Use when implementing new tags
+            // BIOSPrintf("Multiboot tag of type %s (%d) not handled.\n", tagNames[type], type);
             break;
         }
 
