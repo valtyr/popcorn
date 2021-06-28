@@ -14,9 +14,6 @@ extern FBImage popcorn_logo;
 extern u16 popcorn_chime[];
 extern u32 popcorn_chime_length;
 
-static u8 s_pit_counter = 0;
-static u8 s_swap_counter = 0;
-
 void kernel_main(u32 magic, void *addr)
 {
     BIOSGreeting();
